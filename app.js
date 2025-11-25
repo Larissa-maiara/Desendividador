@@ -102,7 +102,7 @@ function render(){
         <div class="card">
           <div class="flex items-center justify-between">
             <h1 class="text-2xl font-bold">Desendividador</h1>
-            <div class="text-sm muted">Versão protótipo</div>
+            <div class="text-sm muted">Olá, <span id="user-name"></span></div>
           </div>
 
           <div class="mt-4 grid grid-cols-3 gap-4">
