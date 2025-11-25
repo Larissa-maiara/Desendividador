@@ -1,0 +1,28 @@
+body { 
+  background:#f0f4f8; 
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
+}
+
+.card { 
+  background:white; 
+  border-radius:12px; 
+  padding:18px; 
+  box-shadow:0 6px 20px rgba(2,6,23,0.06); 
+}
+
+.priority-badge { 
+  padding:4px 10px; 
+  border-radius:999px; 
+  font-weight:600; 
+  color:#fff; 
+  display:inline-block; 
+}
+
+.muted { color:#64748b; }
+.small { font-size:0.9rem; }
+
+label.inline { 
+  display:inline-flex; 
+  align-items:center; 
+  gap:8px; 
+}
