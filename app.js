@@ -1,3 +1,9 @@
+if (!localStorage.getItem("logged_user")) {
+  const path = location.pathname.toLowerCase();
+  if (!path.endsWith("login.html") && !path.endsWith("cadastro.html")) {
+    window.location.href = "login.html";
+  }
+}
 /* ===========================================================
    Configuração de tipos e comportamentos automáticos (final)
    =========================================================== */
