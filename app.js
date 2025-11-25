@@ -67,12 +67,22 @@ function calcFin(d){
 }
 
 function calcIP(d){
-  const Fin = calcFin(d); 
-  const P_JurI  = d.jurImediata ? 4 : 1;
-  const P_Ess   = d.essencial ? 4 : 1;
-  const P_JurNI = (d.conseqLegal && !d.jurImediata) ? 3 : 1;
-  const IP = P_JurI + P_Ess + Fin + P_JurNI;
-  return Math.round(IP*100)/100;
+  // 1. Dimensão Financeira (sempre calculada)
+  const Fin = calcFin(d); // 1..4
+
+  // 2. Dimensão Essencial
+  const P_Ess = d.essencial ? 4 : 0;
+
+  // 3. Dimensão Jurídica
+  let P_Jur = 0;
+  if (d.conseqLegal) {
+    P_Jur = d.jurImediata ? 2 : 1;
+  }
+
+  // Soma final
+  const IP = P_Ess + P_Jur + Fin;
+
+  return Math.round(IP * 100) / 100;
 }
 
 /* ===========================================================
