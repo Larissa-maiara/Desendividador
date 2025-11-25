@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cadastro — Desendividador</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 flex items-center justify-center h-screen">
+
+  <div class="bg-white p-8 rounded-xl shadow-xl w-96">
+    <h1 class="text-2xl font-bold mb-4 text-center">Criar conta</h1>
+
+    <label class="block mb-2 text-sm">Nome</label>
+    <input id="cad-nome" class="w-full p-2 border rounded mb-4">
+
+    <label class="block mb-2 text-sm">Email</label>
+    <input id="cad-email" type="email" class="w-full p-2 border rounded mb-4">
+
+    <label class="block mb-2 text-sm">Senha</label>
+    <input id="cad-senha" type="password" class="w-full p-2 border rounded mb-6">
+
+    <button id="btn-cadastrar" class="w-full bg-green-600 text-white py-2 rounded">Criar conta</button>
+
+    <div class="text-center mt-4 text-sm">
+      <a href="login.html" class="text-blue-600 underline">Voltar para login</a>
+    </div>
+  </div>
+
+<script>
+document.getElementById("btn-cadastrar").onclick = () => {
+  const nome = document.getElementById("cad-nome").value.trim();
+  const email = document.getElementById("cad-email").value.trim();
+  const senha = document.getElementById("cad-senha").value.trim();
+
+  if (!nome || !email || !senha){
+    alert("Preencha todos os campos.");
+    return;
+  }
+
+  if (localStorage.getItem("user_" + email)){
+    alert("Já existe uma conta com este email.");
+    return;
+  }
+
+  const user = { name: nome, email, password: senha };
+
+  localStorage.setItem("user_" + email, JSON.stringify(user));
+  alert("Conta criada com sucesso!");
+  window.location.href = "login.html";
+};
+</script>
+
+</body>
+</html>
