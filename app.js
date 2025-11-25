@@ -108,7 +108,11 @@ function render(){
         <div class="card">
           <div class="flex items-center justify-between">
             <h1 class="text-2xl font-bold">Desendividador</h1>
-            <div class="text-sm muted">Olá, <span id="user-name"></span></div>
+            <div class="flex items-center gap-3 text-sm muted">
+            <span>Olá, <span id="user-name"></span></span>
+            <button id="btn-logout" class="px-2 py-1 border rounded">Sair</button>
+        </div>
+
           </div>
 
           <div class="mt-4 grid grid-cols-3 gap-4">
@@ -359,8 +363,13 @@ function attachHandlers(){
       const id = btn.getAttribute('data-id');
       state.debts = state.debts.filter(d=> d.id !== id);
       render();
-    };
+    };    
   });
+  const btnLogout = document.getElementById("btn-logout");
+  if (btnLogout) btnLogout.onclick = () => {
+    localStorage.removeItem("logged_user");
+    window.location.href = "login.html";
+  };
 }
 
 /* ===========================================================
