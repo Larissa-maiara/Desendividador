@@ -235,6 +235,8 @@ function render(){
 
   attachHandlers();
   updatePayReport();
+   loadUserInfo();
+
 }
 
 /* ===========================================================
@@ -393,6 +395,16 @@ function saveState(){
     localStorage.setItem('desendividor_state', JSON.stringify(state));
   } catch(e){}
 }
+function loadUserInfo(){
+  const email = localStorage.getItem("logged_user");
+  if (!email) return;
+  const user = JSON.parse(localStorage.getItem("user_" + email));
+  if (user){
+    const span = document.getElementById("user-name");
+    if (span) span.textContent = user.name;
+  }
+}
+
 function loadState(){
   try {
     const raw = localStorage.getItem('desendividor_state');
