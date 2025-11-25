@@ -202,7 +202,7 @@ function render(){
                       </div>
                     </div>
                     <div class="text-right">
-                      <div class="priority-badge" style="background:${color}">${d.ip}</div>
+                      <div class="priority-badge" style="background:${color}">${Math.round(d.ip)}</div>
                       <div class="mt-2"><button class="btn-del px-2 py-1 border rounded small" data-id="${d.id}">Excluir</button></div>
                     </div>
                   </div>
