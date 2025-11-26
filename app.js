@@ -190,9 +190,9 @@ function render(){
             ? `<p class="muted">Nenhuma dívida cadastrada.</p>`
             : debtsWithIP.map((d,idx)=>{
                 let color = "#10b981";
-                if (d.ip >= 13) color = "#ef4444";
-                else if (d.ip >= 10) color = "#f59e0b";
-                else if (d.ip >= 7)  color = "#3b82f6";
+                if (d.ip >= 6) color = "#ef4444";
+                else if (d.ip >= 4) color = "#f59e0b";
+                else if (d.ip >= 2)  color = "#3b82f6";
 
                 return `
                 <div class="border rounded p-3 mb-3">
