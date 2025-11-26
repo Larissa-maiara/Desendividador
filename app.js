@@ -42,22 +42,21 @@ function formatCurrency(v){ return new Intl.NumberFormat('pt-BR',{style:'currenc
    Funções de pontuação
    =========================================================== */
 function scoreJuros(juros){
-  if(juros <= 0) return 1;
-  if(juros < 3) return 1;
-  if(juros < 6) return 2;
-  if(juros < 10) return 3;
+  if(juros <= 3,56) return 1;
+  if(juros < 7,56) return 2;
+  if(juros < 13,41) return 3;
   return 4;
 }
 function scoreValor(valor){
   if(valor <= 500) return 1;
-  if(valor <= 2000) return 2;
-  if(valor <= 10000) return 3;
+  if(valor <= 1000) return 2;
+  if(valor <= 2500) return 3;
   return 4;
 }
 function scoreTempo(meses){
-  if(meses <= 1) return 1;
-  if(meses <= 3) return 2;
-  if(meses <= 12) return 3;
+  if(meses <= 3) return 1;
+  if(meses <= 12) return 2;
+  if(meses <= 36) return 3;
   return 4;
 }
 
