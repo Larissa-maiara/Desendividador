@@ -87,6 +87,17 @@ function calcIP(d){
 }
 
 /* ===========================================================
+   Projeção de 1 mês (juros simples)
+   =========================================================== */
+function projecaoUmMes(valor, jurosPercent){
+  const j = Number(jurosPercent) || 0;
+  if(j <= 0) return null;
+  const novoValor = Number(valor) * (1 + j/100);
+  const acrescimo = novoValor - Number(valor);
+  return { novoValor: Number(novoValor), acrescimo: Number(acrescimo) };
+}
+
+/* ===========================================================
    Render principal
    =========================================================== */
 function render(){
@@ -194,7 +205,20 @@ function render(){
                 let color = "#10b981";
                 if (d.ip >= 6) color = "#ef4444";
                 else if (d.ip >= 4) color = "#f59e0b";
-                else if (d.ip >= 2) color = "#3b82f6";
+                else if (d.ip >= 2)  color = "#3b82f6";
+
+                // projeção (juros simples, 1 mês)
+                let projHtml = '';
+                if (Number(d.juros) > 0){
+                  const p = projecaoUmMes(Number(d.valor), Number(d.juros));
+                  if(p){
+                    projHtml = `<div class="small muted mt-2 interest-info">
+                      Se não for paga neste mês, esta dívida passará de <strong>${formatCurrency(Number(d.valor))}</strong>
+                      para <strong>${formatCurrency(p.novoValor)}</strong>, com acréscimo de <strong>${formatCurrency(p.acrescimo)}</strong>
+                      apenas em juros.
+                    </div>`;
+                  }
+                }
 
                 return `
                 <div class="border rounded p-3 mb-3">
@@ -211,6 +235,7 @@ function render(){
                           : ''
                         }
                       </div>
+                      ${projHtml}
                     </div>
                     <div class="text-right">
                       <div class="priority-badge" style="background:${color}">${Math.round(d.ip)}</div>
@@ -225,7 +250,6 @@ function render(){
       </div>
 
       <div>
-
         <div class="card mb-4">
           <h3 class="font-semibold">Pagamento possível com valor disponível</h3>
           <div class="small muted mt-2">Ordem considera prioridade (IP) e valor das dívidas.</div>
@@ -240,7 +264,6 @@ function render(){
             <strong>${formatCurrency(state.debts.reduce((s,x)=>s+Number(x.valor||0),0))}</strong>
           </div>
         </div>
-
       </div>
 
     </div>
@@ -382,6 +405,7 @@ function attachHandlers(){
 
 /* ===========================================================
    Tema Claro/Escuro
+   (mantive a forma como você já tinha no arquivo enviado)
    =========================================================== */
 function applyTheme() {
   const theme = localStorage.getItem("theme") || "light";
@@ -430,14 +454,13 @@ function updatePayReport(){
 }
 
 /* ===========================================================
-   LocalStorage
+   LocalStorage (opcional)
    =========================================================== */
 function saveState(){
   try {
     localStorage.setItem('desendividor_state', JSON.stringify(state));
   } catch(e){}
 }
-
 function loadUserInfo(){
   const email = localStorage.getItem("logged_user");
   if (!email) return;
