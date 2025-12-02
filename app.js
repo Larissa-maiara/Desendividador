@@ -1,6 +1,3 @@
-/* ===========================================================
-   Proteção de rota (login)
-   =========================================================== */
 if (!localStorage.getItem("logged_user")) {
   const path = location.pathname.toLowerCase();
   if (!path.endsWith("login.html") && !path.endsWith("cadastro.html")) {
@@ -9,23 +6,7 @@ if (!localStorage.getItem("logged_user")) {
 }
 
 /* ===========================================================
-   MODO ESCURO / CLARO
-   =========================================================== */
-
-function applyTheme() {
-  const theme = localStorage.getItem("theme") || "light";
-  document.body.setAttribute("data-theme", theme);
-}
-
-function toggleTheme() {
-  const current = localStorage.getItem("theme") || "light";
-  const next = current === "dark" ? "light" : "dark";
-  localStorage.setItem("theme", next);
-  applyTheme();
-}
-
-/* ===========================================================
-   Configuração de tipos (essencial + jurídica)
+   Configuração de tipos e comportamentos automáticos (final)
    =========================================================== */
 const typeInfo = {
   "Água":                     { essencial: true,  juridica: false },
@@ -47,23 +28,19 @@ const typeInfo = {
 const debtTypes = Object.keys(typeInfo);
 
 /* ===========================================================
-   Estado da aplicação
+   Estado da aplicação (memória)
    =========================================================== */
 let state = {
   renda: 0,
   despesasFixas: 0,
-  debts: []
+  debts: [] 
 };
 
-function nowId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-}
-function formatCurrency(v){
-  return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
-}
+function nowId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function formatCurrency(v){ return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0); }
 
 /* ===========================================================
-   Funções de Pontuação
+   Funções de pontuação
    =========================================================== */
 function scoreJuros(juros){
   if(juros <= 3.56) return 1;
@@ -85,17 +62,18 @@ function scoreTempo(meses){
 }
 
 /* ===========================================================
-   Cálculo do Índice de Prioridade
+   Cálculo do Índice de Prioridade (FTP)
    =========================================================== */
 function calcFin(d){
   const Pj = scoreJuros(Number(d.juros));
   const Pv = scoreValor(Number(d.valor));
   const Pt = scoreTempo(Number(d.meses));
-  return (Pj + Pv + Pt) / 3;
+  const Fin = (Pj + Pv + Pt) / 3;
+  return Fin;
 }
 
 function calcIP(d){
-  const Fin = calcFin(d);
+  const Fin = calcFin(d); // 1..4
 
   const P_Ess = d.essencial ? 4 : 0;
 
@@ -109,15 +87,12 @@ function calcIP(d){
 }
 
 /* ===========================================================
-   Render Principal
+   Render principal
    =========================================================== */
 function render(){
-
   const available = Math.max(0, Number(state.renda) - Number(state.despesasFixas));
-
-  const debtsWithIP = state.debts
-    .map(d => ({...d, ip: calcIP(d)}))
-    .sort((a,b) => b.ip - a.ip);
+  const debtsWithIP = state.debts.map(d => ({...d, ip: calcIP(d)}))
+                                 .sort((a,b) => b.ip - a.ip);
 
   const app = document.getElementById('app');
   app.innerHTML = `
@@ -125,19 +100,20 @@ function render(){
 
       <div class="col-span-2 space-y-6">
 
-        <!-- Cabeçalho atualizado com botão de tema -->
         <div class="card">
           <div class="flex items-center justify-between">
-            
+
             <h1 class="text-2xl font-bold">Desendividador</h1>
 
             <button id="btn-theme" class="px-2 py-1 border rounded">🌙 / ☀️</button>
 
             <div class="flex items-center gap-3 text-sm muted">
-              <span>Olá, <span id="user-name"></span></span>
+              <div class="flex items-center gap-1">
+                <span>👤</span>
+                <span id="user-name"></span>
+              </div>
               <button id="btn-logout" class="px-2 py-1 border rounded">Sair</button>
             </div>
-
           </div>
 
           <div class="mt-4 grid grid-cols-3 gap-4">
@@ -162,7 +138,6 @@ function render(){
           </div>
         </div>
 
-        <!-- Adicionar dívidas -->
         <div class="card">
           <h2 class="font-semibold mb-3">Adicionar / editar dívida</h2>
 
@@ -209,7 +184,6 @@ function render(){
           </div>
         </div>
 
-        <!-- Lista de dívidas -->
         <div class="card">
           <h2 class="font-semibold mb-3">Suas dívidas (ordem de prioridade)</h2>
 
@@ -220,7 +194,7 @@ function render(){
                 let color = "#10b981";
                 if (d.ip >= 6) color = "#ef4444";
                 else if (d.ip >= 4) color = "#f59e0b";
-                else if (d.ip >= 2)  color = "#3b82f6";
+                else if (d.ip >= 2) color = "#3b82f6";
 
                 return `
                 <div class="border rounded p-3 mb-3">
@@ -251,6 +225,7 @@ function render(){
       </div>
 
       <div>
+
         <div class="card mb-4">
           <h3 class="font-semibold">Pagamento possível com valor disponível</h3>
           <div class="small muted mt-2">Ordem considera prioridade (IP) e valor das dívidas.</div>
@@ -265,6 +240,7 @@ function render(){
             <strong>${formatCurrency(state.debts.reduce((s,x)=>s+Number(x.valor||0),0))}</strong>
           </div>
         </div>
+
       </div>
 
     </div>
@@ -273,17 +249,13 @@ function render(){
   attachHandlers();
   updatePayReport();
   loadUserInfo();
+  applyTheme(); 
 }
 
 /* ===========================================================
    Handlers
    =========================================================== */
 function attachHandlers(){
-
-  // tema
-  const btnTheme = document.getElementById("btn-theme");
-  if (btnTheme) btnTheme.onclick = toggleTheme;
-
   const btnSave = document.getElementById('btn-save-fin');
   if(btnSave) btnSave.onclick = ()=>{
     state.renda = Number(document.getElementById('inp-renda').value || 0);
@@ -323,7 +295,6 @@ function attachHandlers(){
 
   const btnAdd = document.getElementById('btn-add');
   if(btnAdd) btnAdd.onclick = ()=>{
-
     const tipo = document.getElementById('sel-tipo').value;
     const valor = Number(document.getElementById('inp-valor').value || 0);
     const juros = Number(document.getElementById('inp-juros').value || 0);
@@ -403,6 +374,29 @@ function attachHandlers(){
     localStorage.removeItem("logged_user");
     window.location.href = "login.html";
   };
+
+  // botão de tema
+  const btnTheme = document.getElementById("btn-theme");
+  if (btnTheme) btnTheme.onclick = toggleTheme;
+}
+
+/* ===========================================================
+   Tema Claro/Escuro
+   =========================================================== */
+function applyTheme() {
+  const theme = localStorage.getItem("theme") || "light";
+  if (theme === "dark") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}
+
+function toggleTheme() {
+  const current = localStorage.getItem("theme") || "light";
+  const next = current === "light" ? "dark" : "light";
+  localStorage.setItem("theme", next);
+  applyTheme();
 }
 
 /* ===========================================================
@@ -464,8 +458,8 @@ function loadState(){
 /* ===========================================================
    Inicialização
    =========================================================== */
-applyTheme();     // <- Aqui aplicamos o modo claro/escuro
 loadState();
 render();
+applyTheme();
 
 window.addEventListener('beforeunload', ()=> saveState());
