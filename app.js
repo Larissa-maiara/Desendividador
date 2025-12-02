@@ -418,6 +418,20 @@ function loadUserInfo(){
     if (span) span.textContent = user.name;
   }
 }
+/* ===========================================================
+   Tema (Modo Claro / Escuro)
+   =========================================================== */
+
+function applyTheme() {
+  const theme = localStorage.getItem("theme") || "light";
+  document.body.setAttribute("data-theme", theme);
+}
+
+function toggleTheme() {
+  const theme = localStorage.getItem("theme") === "dark" ? "light" : "dark";
+  localStorage.setItem("theme", theme);
+  applyTheme();
+}
 
 function loadState(){
   try {
