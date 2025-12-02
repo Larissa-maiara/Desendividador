@@ -103,8 +103,14 @@ function projecaoUmMes(valor, jurosPercent){
 function render(){
   const available = Math.max(0, Number(state.renda) - Number(state.despesasFixas));
   const debtsWithIP = state.debts.map(d => ({...d, ip: calcIP(d)}))
-                                 .sort((a,b) => b.ip - a.ip);
-
+                                .sort((a, b) => {
+                                  if (b.ip !== a.ip) return b.ip - a.ip;
+                                
+                                  const jurosA = a.valor * (a.juros / 100);
+                                  const jurosB = b.valor * (b.juros / 100);
+                                
+                                  return jurosB - jurosA;
+                                });
   const app = document.getElementById('app');
   app.innerHTML = `
     <div class="grid grid-cols-3 gap-6">
