@@ -1,16 +1,30 @@
-body { 
+/* ===========================================================
+   Tema Claro (padrão) — herdado identicamente do seu estilo
+   =========================================================== */
+
+body[data-theme="light"] { 
   background:#f0f4f8; 
+  color:#111;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
 }
 
-.card { 
+body[data-theme="light"] .card { 
   background:white; 
   border-radius:12px; 
   padding:18px; 
   box-shadow:0 6px 20px rgba(2,6,23,0.06); 
+  border:1px solid #e2e8f0;
 }
 
-.priority-badge { 
+body[data-theme="light"] input,
+body[data-theme="light"] select,
+body[data-theme="light"] button {
+  background:white;
+  color:#111;
+  border:1px solid #cbd5e1;
+}
+
+body[data-theme="light"] .priority-badge { 
   padding:4px 10px; 
   border-radius:999px; 
   font-weight:600; 
@@ -18,11 +32,68 @@ body {
   display:inline-block; 
 }
 
-.muted { color:#64748b; }
-.small { font-size:0.9rem; }
+body[data-theme="light"] .muted { color:#64748b; }
+body[data-theme="light"] .small { font-size:0.9rem; }
 
 label.inline { 
   display:inline-flex; 
   align-items:center; 
   gap:8px; 
+}
+
+
+/* ===========================================================
+   Tema Escuro (Dark Mode)
+   =========================================================== */
+
+body[data-theme="dark"] {
+  background:#0f172a;    /* cinza-azulado profundo (Tailwind slate-900) */
+  color:#e2e8f0;         /* cinza claro */
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+body[data-theme="dark"] .card {
+  background:#1e293b;        /* slate-800 */
+  color:#f1f5f9;
+  border-radius:12px;
+  padding:18px;
+  border:1px solid #334155;  /* slate-700 */
+  box-shadow:0 6px 20px rgba(2,6,23,0.45);
+}
+
+body[data-theme="dark"] input,
+body[data-theme="dark"] select {
+  background:#0f172a;       /* slate-900 */
+  color:#e2e8f0;            /* slate-200 */
+  border:1px solid #334155; /* slate-700 */
+}
+
+body[data-theme="dark"] input::placeholder,
+body[data-theme="dark"] select option {
+  color:#94a3b8;            /* slate-400 */
+}
+
+body[data-theme="dark"] button {
+  background:#1e293b;
+  color:#e2e8f0;
+  border:1px solid #475569; /* slate-600 */
+}
+
+body[data-theme="dark"] .priority-badge {
+  color:white;
+}
+
+body[data-theme="dark"] .muted {
+  color:#94a3b8; /* slate-400 */
+}
+
+body[data-theme="dark"] .small {
+  font-size:0.9rem;
+  color:#cbd5e1; /* slate-300 */
+}
+
+/* Melhor estética nos inputs em dark mode */
+body[data-theme="dark"] input:hover,
+body[data-theme="dark"] select:hover {
+  border-color:#64748b; /* slate-500 */
 }
