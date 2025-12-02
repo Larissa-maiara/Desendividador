@@ -1,69 +1,94 @@
-/* Tema claro (padrão) */
-body {
-  background: #f0f4f8;
-  color: #1e293b;
+/* ======================= */
+/*       MODO CLARO        */
+/* ======================= */
+
+body { 
+  background:#f0f4f8; 
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
+  color:#0f172a;
 }
 
-/* Cartões */
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 6px 20px rgba(2, 6, 23, 0.06);
+.card { 
+  background:white; 
+  border-radius:12px; 
+  padding:18px; 
+  box-shadow:0 6px 20px rgba(2,6,23,0.06); 
 }
 
-/* Prioridade */
-.priority-badge {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-weight: 600;
-  color: #fff;
-  display: inline-block;
+.priority-badge { 
+  padding:4px 10px; 
+  border-radius:999px; 
+  font-weight:600; 
+  color:#fff; 
+  display:inline-block; 
 }
 
-.muted { color: #64748b; }
-.small { font-size: 0.9rem; }
+.muted { color:#64748b; }
+.small { font-size:0.9rem; }
 
-label.inline {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+label.inline { 
+  display:inline-flex; 
+  align-items:center; 
+  gap:8px; 
 }
 
-/* ============================================================
-   🌙 MODO ESCURO
-   ============================================================ */
-body[data-theme="dark"] {
-  background: #0f172a;     /* cinza bem escuro */
-  color: #e2e8f0;          /* texto claro */
+button {
+  cursor: pointer;
 }
 
-/* Cartões no modo escuro */
-body[data-theme="dark"] .card {
-  background: #1e293b;     /* fundo mais escuro */
-  color: #e2e8f0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
 
-/* Inputs no modo escuro */
-body[data-theme="dark"] input,
-body[data-theme="dark"] select {
+/* ======================= */
+/*        MODO ESCURO      */
+/* ======================= */
+
+body.dark {
   background: #0f172a;
+  color: #e2e8f0;
+}
+
+body.dark .card {
+  background: #1e293b;
+  color: #e2e8f0;
+  box-shadow: none;
+}
+
+body.dark input,
+body.dark select {
+  background: #334155;
   color: #e2e8f0;
   border-color: #475569;
 }
 
-/* Bordas */
-body[data-theme="dark"] .border {
-  border-color: #475569 !important;
+body.dark input::placeholder {
+  color: #cbd5e1;
 }
 
-/* Mudo no modo escuro */
-body[data-theme="dark"] .muted {
+body.dark .muted {
   color: #94a3b8;
 }
 
-/* 🔥 PRESERVAR BOTÕES COLORIDOS DO TAILWIND */
-button[class*="bg-"] {
-  color: white !important;
+body.dark button {
+  background-color: #334155;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+body.dark button:hover {
+  background-color: #475569;
+}
+
+body.dark .priority-badge {
+  color: #fff;
+}
+
+body.dark .text-lg,
+body.dark .text-2xl,
+body.dark h1,
+body.dark h2,
+body.dark h3 {
+  color: #e2e8f0;
+}
+
+body.dark .border {
+  border-color: #475569 !important;
 }
