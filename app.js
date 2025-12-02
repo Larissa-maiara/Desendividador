@@ -1,11 +1,31 @@
+/* ===========================================================
+   Proteção de rota (login)
+   =========================================================== */
 if (!localStorage.getItem("logged_user")) {
   const path = location.pathname.toLowerCase();
   if (!path.endsWith("login.html") && !path.endsWith("cadastro.html")) {
     window.location.href = "login.html";
   }
 }
+
 /* ===========================================================
-   Configuração de tipos e comportamentos automáticos (final)
+   MODO ESCURO / CLARO
+   =========================================================== */
+
+function applyTheme() {
+  const theme = localStorage.getItem("theme") || "light";
+  document.body.setAttribute("data-theme", theme);
+}
+
+function toggleTheme() {
+  const current = localStorage.getItem("theme") || "light";
+  const next = current === "dark" ? "light" : "dark";
+  localStorage.setItem("theme", next);
+  applyTheme();
+}
+
+/* ===========================================================
+   Configuração de tipos (essencial + jurídica)
    =========================================================== */
 const typeInfo = {
   "Água":                     { essencial: true,  juridica: false },
@@ -27,24 +47,28 @@ const typeInfo = {
 const debtTypes = Object.keys(typeInfo);
 
 /* ===========================================================
-   Estado da aplicação (memória)
+   Estado da aplicação
    =========================================================== */
 let state = {
   renda: 0,
   despesasFixas: 0,
-  debts: [] 
+  debts: []
 };
 
-function nowId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-function formatCurrency(v){ return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0); }
+function nowId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+}
+function formatCurrency(v){
+  return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
+}
 
 /* ===========================================================
-   Funções de pontuação
+   Funções de Pontuação
    =========================================================== */
 function scoreJuros(juros){
-  if(juros <= 3,56) return 1;
-  if(juros < 7,56) return 2;
-  if(juros < 13,41) return 3;
+  if(juros <= 3.56) return 1;
+  if(juros < 7.56) return 2;
+  if(juros < 13.41) return 3;
   return 4;
 }
 function scoreValor(valor){
@@ -61,42 +85,39 @@ function scoreTempo(meses){
 }
 
 /* ===========================================================
-   Cálculo do Índice de Prioridade (FTP)
+   Cálculo do Índice de Prioridade
    =========================================================== */
 function calcFin(d){
   const Pj = scoreJuros(Number(d.juros));
   const Pv = scoreValor(Number(d.valor));
   const Pt = scoreTempo(Number(d.meses));
-  const Fin = (Pj + Pv + Pt) / 3;
-  return Fin;
+  return (Pj + Pv + Pt) / 3;
 }
 
 function calcIP(d){
-  // 1. Dimensão Financeira (sempre calculada)
-  const Fin = calcFin(d); // 1..4
+  const Fin = calcFin(d);
 
-  // 2. Dimensão Essencial
   const P_Ess = d.essencial ? 4 : 0;
 
-  // 3. Dimensão Jurídica
   let P_Jur = 0;
   if (d.conseqLegal) {
     P_Jur = d.jurImediata ? 2 : 1;
   }
 
-  // Soma final
   const IP = P_Ess + P_Jur + Fin;
-
   return Math.round(IP * 100) / 100;
 }
 
 /* ===========================================================
-   Render principal
+   Render Principal
    =========================================================== */
 function render(){
+
   const available = Math.max(0, Number(state.renda) - Number(state.despesasFixas));
-  const debtsWithIP = state.debts.map(d => ({...d, ip: calcIP(d)}))
-                                 .sort((a,b) => b.ip - a.ip);
+
+  const debtsWithIP = state.debts
+    .map(d => ({...d, ip: calcIP(d)}))
+    .sort((a,b) => b.ip - a.ip);
 
   const app = document.getElementById('app');
   app.innerHTML = `
@@ -104,13 +125,18 @@ function render(){
 
       <div class="col-span-2 space-y-6">
 
+        <!-- Cabeçalho atualizado com botão de tema -->
         <div class="card">
           <div class="flex items-center justify-between">
+            
             <h1 class="text-2xl font-bold">Desendividador</h1>
+
+            <button id="btn-theme" class="px-2 py-1 border rounded">🌙 / ☀️</button>
+
             <div class="flex items-center gap-3 text-sm muted">
-            <span>Olá, <span id="user-name"></span></span>
-            <button id="btn-logout" class="px-2 py-1 border rounded">Sair</button>
-        </div>
+              <span>Olá, <span id="user-name"></span></span>
+              <button id="btn-logout" class="px-2 py-1 border rounded">Sair</button>
+            </div>
 
           </div>
 
@@ -136,6 +162,7 @@ function render(){
           </div>
         </div>
 
+        <!-- Adicionar dívidas -->
         <div class="card">
           <h2 class="font-semibold mb-3">Adicionar / editar dívida</h2>
 
@@ -182,6 +209,7 @@ function render(){
           </div>
         </div>
 
+        <!-- Lista de dívidas -->
         <div class="card">
           <h2 class="font-semibold mb-3">Suas dívidas (ordem de prioridade)</h2>
 
@@ -244,14 +272,18 @@ function render(){
 
   attachHandlers();
   updatePayReport();
-   loadUserInfo();
-
+  loadUserInfo();
 }
 
 /* ===========================================================
    Handlers
    =========================================================== */
 function attachHandlers(){
+
+  // tema
+  const btnTheme = document.getElementById("btn-theme");
+  if (btnTheme) btnTheme.onclick = toggleTheme;
+
   const btnSave = document.getElementById('btn-save-fin');
   if(btnSave) btnSave.onclick = ()=>{
     state.renda = Number(document.getElementById('inp-renda').value || 0);
@@ -291,6 +323,7 @@ function attachHandlers(){
 
   const btnAdd = document.getElementById('btn-add');
   if(btnAdd) btnAdd.onclick = ()=>{
+
     const tipo = document.getElementById('sel-tipo').value;
     const valor = Number(document.getElementById('inp-valor').value || 0);
     const juros = Number(document.getElementById('inp-juros').value || 0);
@@ -364,6 +397,7 @@ function attachHandlers(){
       render();
     };    
   });
+
   const btnLogout = document.getElementById("btn-logout");
   if (btnLogout) btnLogout.onclick = () => {
     localStorage.removeItem("logged_user");
@@ -402,13 +436,14 @@ function updatePayReport(){
 }
 
 /* ===========================================================
-   LocalStorage (opcional)
+   LocalStorage
    =========================================================== */
 function saveState(){
   try {
     localStorage.setItem('desendividor_state', JSON.stringify(state));
   } catch(e){}
 }
+
 function loadUserInfo(){
   const email = localStorage.getItem("logged_user");
   if (!email) return;
@@ -417,20 +452,6 @@ function loadUserInfo(){
     const span = document.getElementById("user-name");
     if (span) span.textContent = user.name;
   }
-}
-/* ===========================================================
-   Tema (Modo Claro / Escuro)
-   =========================================================== */
-
-function applyTheme() {
-  const theme = localStorage.getItem("theme") || "light";
-  document.body.setAttribute("data-theme", theme);
-}
-
-function toggleTheme() {
-  const theme = localStorage.getItem("theme") === "dark" ? "light" : "dark";
-  localStorage.setItem("theme", theme);
-  applyTheme();
 }
 
 function loadState(){
@@ -443,6 +464,7 @@ function loadState(){
 /* ===========================================================
    Inicialização
    =========================================================== */
+applyTheme();     // <- Aqui aplicamos o modo claro/escuro
 loadState();
 render();
 
