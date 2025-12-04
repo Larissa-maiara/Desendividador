@@ -8,6 +8,14 @@ body {
   color:#0f172a;
 }
 
+.user-icon {
+  font-size: 1.1rem;
+  margin-right: 6px;
+}
+
+body .user-icon {
+  color: #7c3aed;
+}
 .card { 
   background:white; 
   border-radius:12px; 
@@ -75,6 +83,10 @@ body.dark button {
 
 body.dark button:hover {
   background-color: #475569;
+}
+
+body.dark-mode .user-icon {
+  color: #c084fc; /* roxo claro, visível no fundo escuro */
 }
 
 body.dark .priority-badge {
