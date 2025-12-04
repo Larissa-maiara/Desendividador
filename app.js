@@ -126,7 +126,7 @@ function render(){
 
             <div class="flex items-center gap-3 text-sm muted">
               <div class="flex items-center gap-1">
-                <span>👤</span>
+                <span class="user-icon">👤</span>
                 <span id="user-name"></span>
               </div>
               <button id="btn-logout" class="px-2 py-1 border rounded">Sair</button>
