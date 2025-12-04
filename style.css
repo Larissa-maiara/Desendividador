@@ -1,107 +1,146 @@
-/* ======================= */
-/*       MODO CLARO        */
-/* ======================= */
+/* ========================================= */
+/*              VARIÁVEIS DE TEMA            */
+/* ========================================= */
 
-body { 
-  background:#f0f4f8; 
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
-  color:#0f172a;
+:root {
+  --bg: #f0f4f8;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --btn-bg: #e2e8f0;
+  --btn-text: #0f172a;
+  --btn-border: #cbd5e1;
+  --shadow: 0 6px 20px rgba(2, 6, 23, 0.06);
 }
+
+body.dark {
+  --bg: #0f172a;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --card-bg: #1e293b;
+  --input-bg: #334155;
+  --input-border: #475569;
+  --btn-bg: #334155;
+  --btn-text: #e2e8f0;
+  --btn-border: #475569;
+  --shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ========================================= */
+/*                 BASE GLOBAL               */
+/* ========================================= */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* ===== Textos ===== */
+
+.muted { color: var(--text-muted); }
+.small { font-size: 0.9rem; }
+
+/* ===== Cartões ===== */
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+/* ===== Badges ===== */
+
+.priority-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #fff;
+  display: inline-block;
+}
+
+/* ===== Ícone usuário ===== */
 
 .user-icon {
   font-size: 1.1rem;
   margin-right: 6px;
-}
-
-body .user-icon {
   color: #7c3aed;
-}
-.card { 
-  background:white; 
-  border-radius:12px; 
-  padding:18px; 
-  box-shadow:0 6px 20px rgba(2,6,23,0.06); 
-}
-
-.priority-badge { 
-  padding:4px 10px; 
-  border-radius:999px; 
-  font-weight:600; 
-  color:#fff; 
-  display:inline-block; 
-}
-
-.muted { color:#64748b; }
-.small { font-size:0.9rem; }
-
-label.inline { 
-  display:inline-flex; 
-  align-items:center; 
-  gap:8px; 
-}
-
-button {
-  cursor: pointer;
-}
-
-
-/* ======================= */
-/*        MODO ESCURO      */
-/* ======================= */
-
-body.dark {
-  background: #0f172a;
-  color: #e2e8f0;
-}
-
-body.dark .card {
-  background: #1e293b;
-  color: #e2e8f0;
-  box-shadow: none;
-}
-
-body.dark input,
-body.dark select {
-  background: #334155;
-  color: #e2e8f0;
-  border-color: #475569;
-}
-
-body.dark input::placeholder {
-  color: #cbd5e1;
-}
-
-body.dark .muted {
-  color: #94a3b8;
-}
-
-body.dark button {
-  background-color: #334155;
-  color: #e2e8f0;
-  border-color: #475569;
-}
-
-body.dark button:hover {
-  background-color: #475569;
 }
 
 body.dark .user-icon {
-  color: #f8fafc; /* ícone branco no modo escuro */
+  color: #f8fafc;
 }
 
+/* ========================================= */
+/*            INPUTS E FORMULÁRIOS           */
+/* ========================================= */
 
-body.dark .priority-badge {
-  color: #fff;
+input,
+select {
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  padding: 8px;
 }
 
-body.dark .text-lg,
-body.dark .text-2xl,
-body.dark h1,
-body.dark h2,
-body.dark h3 {
-  color: #e2e8f0;
+input::placeholder {
+  color: var(--text-muted);
 }
 
-body.dark .border {
-  border-color: #475569 !important;
+/* Foco (acessibilidade melhorada) */
+input:focus,
+select:focus,
+button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 1px;
+}
+
+/* ========================================= */
+/*                   BOTÕES                  */
+/* ========================================= */
+
+button {
+  cursor: pointer;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--btn-border);
+  border-radius: 6px;
+  transition: 0.15s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+body.dark button:hover {
+  background: #475569;
+}
+
+/* Checkboxes com alinhamento */
+label.inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========================================= */
+/*                BORDAS ÚTEIS               */
+/* ========================================= */
+
+.border {
+  border: 1px solid var(--input-border) !important;
+}
+
+/* ========================================= */
+/*               RESPONSIVIDADE              */
+/* ========================================= */
+
+@media (max-width: 900px) {
+  .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
 }
