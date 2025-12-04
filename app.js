@@ -122,7 +122,16 @@ function render(){
 
             <h1 class="text-2xl font-bold">Desendividador</h1>
 
-            <button id="btn-theme" class="px-2 py-1 border rounded">🌙 / ☀️</button>
+            <button id="btn-theme" class="theme-toggle">
+              <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M12 4.5V2m0 20v-2.5m7.5-7.5H22M2 12h2.5m14.14 5.36l1.77 1.77M4.09 4.09l1.77 1.77m0 12.28l-1.77 1.77m14.14-14.14l1.77-1.77M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+              </svg>
+
+              <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>
+                </svg>
+            </button>
+
 
             <div class="flex items-center gap-3 text-sm muted">
               <div class="flex items-center gap-1">
@@ -419,11 +428,9 @@ function attachHandlers(){
    =========================================================== */
 function applyTheme() {
   const theme = localStorage.getItem("theme") || "light";
-  if (theme === "dark") {
-    document.body.classList.add("dark");
-  } else {
-    document.body.classList.remove("dark");
-  }
+  document.body.classList.remove("light", "dark");
+  document.body.classList.add(theme);
+
 }
 
 function toggleTheme() {
