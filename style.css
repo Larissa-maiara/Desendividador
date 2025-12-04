@@ -1,68 +1,12 @@
-/* ========================================= */
-/*              VARIÁVEIS DE TEMA            */
-/* ========================================= */
+/* ======================= */
+/*       MODO CLARO        */
+/* ======================= */
 
-:root {
-  --bg: #f0f4f8;
-  --text: #0f172a;
-  --text-muted: #64748b;
-  --card-bg: #ffffff;
-  --input-bg: #ffffff;
-  --input-border: #cbd5e1;
-  --btn-bg: #e2e8f0;
-  --btn-text: #0f172a;
-  --btn-border: #cbd5e1;
-  --shadow: 0 6px 20px rgba(2, 6, 23, 0.06);
+body.light { 
+  background:#f0f4f8; 
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
+  color:#0f172a;
 }
-
-body.dark {
-  --bg: #0f172a;
-  --text: #e2e8f0;
-  --text-muted: #94a3b8;
-  --card-bg: #1e293b;
-  --input-bg: #334155;
-  --input-border: #475569;
-  --btn-bg: #334155;
-  --btn-text: #e2e8f0;
-  --btn-border: #475569;
-  --shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-/* ========================================= */
-/*                 BASE GLOBAL               */
-/* ========================================= */
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-}
-
-/* ===== Textos ===== */
-
-.muted { color: var(--text-muted); }
-.small { font-size: 0.9rem; }
-
-/* ===== Cartões ===== */
-
-.card {
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: var(--shadow);
-}
-
-/* ===== Badges ===== */
-
-.priority-badge {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-weight: 600;
-  color: #fff;
-  display: inline-block;
-}
-
-/* ===== Ícone usuário ===== */
 
 .user-icon {
   font-size: 1.1rem;
@@ -70,77 +14,131 @@ body {
   color: #7c3aed;
 }
 
-body.dark .user-icon {
-  color: #f8fafc;
+.card { 
+  background:white; 
+  border-radius:12px; 
+  padding:18px; 
+  box-shadow:0 6px 20px rgba(2,6,23,0.06); 
 }
 
-/* ========================================= */
-/*            INPUTS E FORMULÁRIOS           */
-/* ========================================= */
-
-input,
-select {
-  background: var(--input-bg);
-  color: var(--text);
-  border: 1px solid var(--input-border);
-  border-radius: 6px;
-  padding: 8px;
+.priority-badge { 
+  padding:4px 10px; 
+  border-radius:999px; 
+  font-weight:600; 
+  color:#fff; 
+  display:inline-block; 
 }
 
-input::placeholder {
-  color: var(--text-muted);
-}
+.muted { color:#64748b; }
+.small { font-size:0.9rem; }
 
-/* Foco (acessibilidade melhorada) */
-input:focus,
-select:focus,
-button:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 1px;
+label.inline { 
+  display:inline-flex; 
+  align-items:center; 
+  gap:8px; 
 }
-
-/* ========================================= */
-/*                   BOTÕES                  */
-/* ========================================= */
 
 button {
   cursor: pointer;
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  border: 1px solid var(--btn-border);
-  border-radius: 6px;
-  transition: 0.15s ease;
 }
 
-button:hover {
-  opacity: 0.9;
+/* ======================= */
+/*   BOTÃO DE TEMA (novo)  */
+/* ======================= */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background:white;
+  cursor:pointer;
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  display: none;
+  color: #334155;
+}
+
+/* Mostra só o sol no modo claro */
+body.light .theme-toggle .icon-sun { 
+  display: block; 
+}
+
+/* Mostra só a lua no modo escuro */
+body.dark .theme-toggle .icon-moon { 
+  display: block; 
+}
+
+
+/* ======================= */
+/*        MODO ESCURO      */
+/* ======================= */
+
+body.dark {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+body.dark .card {
+  background: #1e293b;
+  color: #e2e8f0;
+  box-shadow: none;
+}
+
+body.dark input,
+body.dark select {
+  background: #334155;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+body.dark input::placeholder {
+  color: #cbd5e1;
+}
+
+body.dark .muted {
+  color: #94a3b8;
+}
+
+body.dark button {
+  background-color: #334155;
+  color: #e2e8f0;
+  border-color: #475569;
 }
 
 body.dark button:hover {
-  background: #475569;
+  background-color: #475569;
 }
 
-/* Checkboxes com alinhamento */
-label.inline {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+/* Ícone de usuário clareado */
+body.dark .user-icon {
+  color: #f8fafc; 
 }
 
-/* ========================================= */
-/*                BORDAS ÚTEIS               */
-/* ========================================= */
-
-.border {
-  border: 1px solid var(--input-border) !important;
+/* Botão de tema estilizado no modo escuro */
+body.dark .theme-toggle {
+  background:#334155;
+  border-color:#475569;
+  color:#f8fafc;
 }
 
-/* ========================================= */
-/*               RESPONSIVIDADE              */
-/* ========================================= */
+body.dark .priority-badge {
+  color: #fff;
+}
 
-@media (max-width: 900px) {
-  .grid-cols-3 {
-    grid-template-columns: 1fr !important;
-  }
+body.dark .text-lg,
+body.dark .text-2xl,
+body.dark h1,
+body.dark h2,
+body.dark h3 {
+  color: #e2e8f0;
+}
+
+body.dark .border {
+  border-color: #475569 !important;
 }
