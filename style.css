@@ -86,8 +86,9 @@ body.dark button:hover {
 }
 
 body.dark .user-icon {
-  color: #f8fafc;
+  color: #f8fafc; /* ícone branco no modo escuro */
 }
+
 
 body.dark .priority-badge {
   color: #fff;
